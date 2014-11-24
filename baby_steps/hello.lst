@@ -1,0 +1,32 @@
+     1                                  ; hello.asm
+     2                                  ; 23 NOV 2012
+     3                                  ; http://web.archive.org/web/20070830122645/http://untimedcode.com/2007/5/20/learn-nasm-assembly-on-mac-os-x
+     4                                  ;
+     5                                  ; nasm -f macho hello.asm
+     6                                  ; ld -e _start -o hello hello.o
+     7                                  ; nasm -f macho hello.asm -l hello.lst
+     8                                  ;
+     9                                  section	.text			; code start
+    10                                  global	_start			; make externally visible
+    11                                  ; 
+    12                                  section	.data			; data start
+    13 00000000 48656C6C6F2C20576F-     	message		db	"Hello, World!", 0xa
+    14 00000009 726C64210A         
+    15                                  	message_length	equ	$-message
+    16                                  ; 
+    17                                  _syscall:			; declare kernel call function
+    18 0000000E CD80                    	int		0x80
+    19 00000010 C3                      	ret
+    20                                  ;
+    21                                  _start:				; linker entry point
+    22                                  				; write message to standard output
+    23 00000011 680E000000              	push	dword message_length
+    24 00000016 68[00000000]            	push	dword message
+    25 0000001B 6801000000              	push	dword 1		; file descriptor
+    26 00000020 B804000000              	mov	eax, 0x4	; sys_write
+    27 00000025 E8E4FFFFFF              	call	_syscall
+    28 0000002A 81C40C000000            	add	esp, 12		; stack cleanup
+    29 00000030 6800000000              	push	dword 0		; exit
+    30 00000035 B801000000              	mov	eax, 0x1        ; sys_exit
+    31 0000003A E8CFFFFFFF              	call	_syscall
+    32                                  ;
