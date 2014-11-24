@@ -1,5 +1,5 @@
 ; hello.asm
-; 23 NOV 2012
+; 23 NOV 2014
 ; http://web.archive.org/web/20070830122645/http://untimedcode.com/2007/5/20/learn-nasm-assembly-on-mac-os-x
 ;
 ; nasm -f macho hello.asm
